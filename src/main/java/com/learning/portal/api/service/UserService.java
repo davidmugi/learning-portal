@@ -4,6 +4,8 @@ import com.learning.portal.core.template.BaseServiceInterface;
 import com.learning.portal.web.usermanager.entity.Users;
 import com.learning.portal.web.usermanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -59,5 +61,16 @@ public class UserService implements BaseServiceInterface<Users> {
   @Override
   public List<Users> fetchAll() {
     return (List<Users>) userRepository.findAll();
+  }
+
+
+  public Optional<Users> getLoginUSer() {
+    var user = SecurityContextHolder.getContext().getAuthentication();
+
+    if (user.isAuthenticated()){
+      return userRepository.findByEmail(user.getName());
+    }
+
+    return Optional.empty();
   }
 }

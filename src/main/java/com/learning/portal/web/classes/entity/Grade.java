@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "class")
+@Table(name = "grade")
 public class Grade extends CreatedByAndUpdatedBy {
 
 
