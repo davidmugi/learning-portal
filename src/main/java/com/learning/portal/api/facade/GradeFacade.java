@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,11 +24,13 @@ public class GradeFacade implements FacadeInterface<Grade> {
   public ResponseModel<Grade> create(Grade grade) {
     Grade record;
     String validationRules = gradeService.validationRules(grade);
-    if (validationRules == null) {
+    if (validationRules != null) {
       return responseModel(null, validationRules);
     }
 
     grade.setFlag(AppConstants.ACTIVE_RECORD);
+    grade.setCreatedDate(new Date());
+    grade.setLastModifiedDate(new Date());
     record = gradeService.create(grade);
 
     String message =
