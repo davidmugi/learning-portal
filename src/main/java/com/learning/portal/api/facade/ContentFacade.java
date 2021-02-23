@@ -4,82 +4,125 @@ import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.ContentService;
 import com.learning.portal.api.service.UserService;
+import com.learning.portal.core.aws.AmazonServiceInterface;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.web.usermanager.entity.Users;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import com.learning.portal.web.content.entity.Content;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ContentFacade implements FacadeInterface<Content> {
 
-    private final ContentService contentService;
+  private final ContentService contentService;
 
-    private final UserService userService;
+  private final UserService userService;
 
-    @Override
-    public ResponseModel<Content> create(Content content) {
+  private final AmazonServiceInterface amazonServiceInterface;
 
+  @Override
+  public ResponseModel<Content> create(Content content) {
+    return null;
+  }
 
-        Users users = userService.getLoginUSer().get();
+  public ResponseModel<Content> create(Content content, MultipartFile file) throws IOException {
+    String originalFileName = file.getOriginalFilename();
+    String ext = FilenameUtils.getExtension(originalFileName);
+    String filename = String.format("profile-%s.%s", UUID.randomUUID().toString(), ext);
 
-        content.setCreatedDate(new Date());
-        content.setLastModifiedDate(new Date());
-        content.setCreatedBy(users.getId());
+    String url = amazonServiceInterface.uploadMultipartFile(file, filename);
 
-        var record = contentService.create(content);
+    Users users = userService.getLoginUSer().get();
 
-        String message = (record == null) ?
-                AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;
+    content.setCreatedDate(new Date());
+    content.setLastModifiedDate(new Date());
+    content.setCreatedBy(users.getId());
+    content.setContentLink(url);
 
-        return responseModel(record,message);
-    }
+    var record = contentService.create(content);
 
-    @Override
-    public ResponseModel<Content> update(Content content) {
-        return null;
-    }
+    String message =
+        (record == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;
 
-    @Override
-    public ResponseModel<Content> readId(Long id) {
-        var record = contentService.fetchOne(id);
+    return responseModel(record, message);
+  }
 
-        String message = (record.isPresent()) ?
-                AppConstants.SUCCESS_FETCH_MESSAGE : AppConstants.FAIL_FETCH_MESSAGE;
+  @Override
+  public ResponseModel<Content> update(Content content) {
+    var record = contentService.update(content);
 
+    String message =
+        (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
 
-        return responseModel(record,message);
-    }
+    return responseModel(record, message);
+  }
 
-    @Override
-    public ResponseModel<Content> readAll() {
-        var record = contentService.fetchAll();
+  @Override
+  public ResponseModel<Content> readId(Long id) {
+    var record = contentService.fetchOne(id);
 
-        String message = (record == null) ?
-                AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
+    String message =
+        (record.isPresent()) ? AppConstants.SUCCESS_FETCH_MESSAGE : AppConstants.FAIL_FETCH_MESSAGE;
 
-        return responseModel(record,message);
-    }
+    return responseModel(record, message);
+  }
 
-    @Override
-    public ResponseModel<Content> delete(Long id) {
-        return null;
-    }
+  @Override
+  public ResponseModel<Content> readAll() {
+    var record = contentService.fetchAll();
 
-    private ResponseModel responseModel(Object record, String message) {
-        String status = (record == null) ? "01" : "00";
-        var data = (record == null) ? null : record;
+    String message =
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
 
-        ResponseModel responseModel = new ResponseModel();
-        responseModel.setStatus(status);
-        responseModel.setMessage(message);
-        responseModel.setData(data);
+    return responseModel(record, message);
+  }
 
-        return responseModel;
-    }
+  @Override
+  public ResponseModel<Content> delete(Long id) {
+    var record = contentService.delete(id);
+
+    String message =
+        (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+
+    return responseModel(record, message);
+  }
+
+  private ResponseModel responseModel(Object record, String message) {
+    String status = (record == null) ? "01" : "00";
+    var data = (record == null) ? null : record;
+
+    ResponseModel responseModel = new ResponseModel();
+    responseModel.setStatus(status);
+    responseModel.setMessage(message);
+    responseModel.setData(data);
+
+    return responseModel;
+  }
+
+  public ResponseModel fetchContentPerGrade(Long gradeId) {
+    var record = contentService.fetchPerGrade(gradeId);
+
+    String message =
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
+
+    return responseModel(record, message);
+  }
+
+  public ResponseModel fetchContentPerCreator(Long userId) {
+    var record = contentService.fetchPerCreator(userId);
+
+    String message =
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
+
+    return responseModel(record, message);
+  }
 }

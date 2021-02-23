@@ -1,5 +1,6 @@
 package com.learning.portal.api.service;
 
+import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.core.template.BaseServiceInterface;
 import com.learning.portal.web.usermanager.entity.UserGroups;
 import com.learning.portal.web.usermanager.repository.UserGroupRepository;
@@ -25,7 +26,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
   }
 
   @Override
-  public boolean update(UserGroups userGroups) {
+  public Object update(UserGroups userGroups) {
     var record = userGroupRepository.findById(userGroups.getId());
 
     if (record.isPresent()) {
@@ -36,16 +37,16 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
   }
 
   @Override
-  public boolean delete(Long id) {
+  public Object delete(Long id) {
     var record = userGroupRepository.findById(id);
 
     if (record.isPresent()) {
       UserGroups userGroups = record.get();
-      userGroups.setFlag("3");
+      userGroups.setFlag(AppConstants.DELETE_RECORD);
       userGroupRepository.save(userGroups);
       return true;
     }
-    return false;
+    return null;
   }
 
   @Override

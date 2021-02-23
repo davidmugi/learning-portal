@@ -48,10 +48,10 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   @Override
   public ResponseModel<UserGroups> update(UserGroups userGroups) {
-    boolean record = userGroupService.update(userGroups);
+    var record = userGroupService.update(userGroups);
 
     String message =
-        (record == false) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
 
     return responseModel(record, message);
   }
@@ -83,7 +83,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
     var record = userGroupService.delete(id);
 
     String message =
-        (record == false) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
 
     return responseModel(record, message);
   }

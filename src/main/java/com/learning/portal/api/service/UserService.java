@@ -1,10 +1,10 @@
 package com.learning.portal.api.service;
 
+import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.core.template.BaseServiceInterface;
 import com.learning.portal.web.usermanager.entity.Users;
 import com.learning.portal.web.usermanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,26 +30,26 @@ public class UserService implements BaseServiceInterface<Users> {
   }
 
   @Override
-  public boolean update(Users users) {
+  public Object update(Users users) {
     var record = userRepository.findById(users.getId());
     if (record.isPresent()) {
       userRepository.save(users);
       return true;
     }
-    return false;
+    return null;
   }
 
   @Override
-  public boolean delete(Long id) {
+  public Object delete(Long id) {
     var record = userRepository.findById(id);
 
     if (record.isPresent()) {
       Users users = record.get();
-      users.setEnabled(false);
+      users.setFlag(AppConstants.DELETE_RECORD);
       userRepository.save(users);
       return true;
     }
-    return false;
+    return null;
   }
 
   @Override
@@ -63,14 +63,11 @@ public class UserService implements BaseServiceInterface<Users> {
     return (List<Users>) userRepository.findAll();
   }
 
-
   public Optional<Users> getLoginUSer() {
     var user = SecurityContextHolder.getContext().getAuthentication();
-
-    if (user.isAuthenticated()){
+    if (user.isAuthenticated()) {
       return userRepository.findByEmail(user.getName());
     }
-
     return Optional.empty();
   }
 }
