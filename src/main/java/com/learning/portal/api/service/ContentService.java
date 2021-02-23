@@ -1,7 +1,7 @@
 package com.learning.portal.api.service;
 
+import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.core.template.BaseServiceInterface;
-import com.learning.portal.web.classes.repository.GradeRepository;
 import com.learning.portal.web.content.entity.Content;
 import com.learning.portal.web.content.repository.ContentRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +29,27 @@ public class ContentService implements BaseServiceInterface<Content> {
   }
 
   @Override
-  public boolean update(Content content) {
-    return false;
+  public Object update(Content content) {
+    var record = contentRepository.findById(content.getId());
+
+    if (record.isPresent()) {
+      contentRepository.save(content);
+      return true;
+    }
+    return null;
   }
 
   @Override
-  public boolean delete(Long id) {
-    return false;
+  public Object delete(Long id) {
+    var record = contentRepository.findById(id);
+
+    if (record.isPresent()) {
+      Content content = record.get();
+      content.setFlag(AppConstants.DELETE_RECORD);
+      contentRepository.save(content);
+      return true;
+    }
+    return null;
   }
 
   @Override
@@ -47,5 +61,13 @@ public class ContentService implements BaseServiceInterface<Content> {
   @Override
   public List<Content> fetchAll() {
     return (List<Content>) contentRepository.findAll();
+  }
+
+  public List<Content> fetchPerGrade(Long gradeId) {
+    return contentRepository.findAllByGradeId(gradeId);
+  }
+
+  public List<Content> fetchPerCreator(Long userId) {
+    return contentRepository.findAllByCreatedBy(userId);
   }
 }

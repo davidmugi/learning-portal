@@ -1,0 +1,17 @@
+
+DROP TABLE IF EXISTS `amazon-config`;
+CREATE TABLE `amazon-config`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(45) NULL DEFAULT NULL ,
+    `access-key` VARCHAR (100) NULL DEFAULT NULL ,
+    `secret-key` VARCHAR (100) NULL DEFAULT NULL ,
+    `bucket-name` VARCHAR (100) NULL DEFAULT NULL ,
+    `s3Url` VARCHAR (100) NULL DEFAULT NULL ,
+    `created_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+    `last_modified_date` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ,
+    `flag` VARCHAR (30) NULL DEFAULT NULL ,
+
+    PRIMARY KEY (`id`)
+)
+    ENGINE = InnoDB
+    DEFAULT CHARSET = utf8;

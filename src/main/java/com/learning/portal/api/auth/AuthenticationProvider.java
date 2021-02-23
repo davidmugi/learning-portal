@@ -8,9 +8,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class AuthenticationProvider extends DaoAuthenticationProvider {
 
   @Autowired
@@ -27,10 +28,13 @@ public class AuthenticationProvider extends DaoAuthenticationProvider {
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
     try {
-      return super.authenticate(authentication);
+      Authentication auth = super.authenticate(authentication);
+
+      return auth;
     } catch (BadCredentialsException e) {
       e.printStackTrace();
-      throw new BadCredentialsException("Invalid Credentials");
+      throw new BadCredentialsException("Invalid Credentials",e);
     }
+
   }
 }

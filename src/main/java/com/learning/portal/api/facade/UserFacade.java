@@ -7,6 +7,7 @@ import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.web.usermanager.entity.Users;
 import com.learning.portal.web.usermanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,7 @@ public class UserFacade implements FacadeInterface<Users> {
   @Override
   public ResponseModel<Users> create(Users users) {
     Users record;
+    String password = new BCryptPasswordEncoder().encode(users.getPassword());
     String validationMessage = validationCheck(users);
 
     if (validationMessage != null) {
@@ -31,6 +33,7 @@ public class UserFacade implements FacadeInterface<Users> {
     }
 
     users.setEnabled(true);
+    users.setPassword(password);
     record = userService.create(users);
 
     String message =
@@ -41,10 +44,10 @@ public class UserFacade implements FacadeInterface<Users> {
 
   @Override
   public ResponseModel<Users> update(Users users) {
-    boolean record = userService.update(users);
+    var record = userService.update(users);
 
     String message =
-        (record == false) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
 
     return responseModel(record, message);
   }
@@ -71,10 +74,10 @@ public class UserFacade implements FacadeInterface<Users> {
 
   @Override
   public ResponseModel<Users> delete(Long id) {
-    boolean record = userService.delete(id);
+    var record = userService.delete(id);
 
     String message =
-        (record == false) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
 
     return responseModel(record, message);
   }

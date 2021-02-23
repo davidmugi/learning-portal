@@ -41,11 +41,10 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   @Override
   public ResponseModel<Grade> update(Grade grade) {
-    boolean record;
-    record = gradeService.update(grade);
+    var record = gradeService.update(grade);
 
     String message =
-        (record == false) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
     return responseModel(record, message);
   }
 
@@ -73,10 +72,10 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   @Override
   public ResponseModel<Grade> delete(Long id) {
-    boolean record = gradeService.delete(id);
+    var record = gradeService.delete(id);
 
     String message =
-        (record == false) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+        (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
 
     return responseModel(record, message);
   }

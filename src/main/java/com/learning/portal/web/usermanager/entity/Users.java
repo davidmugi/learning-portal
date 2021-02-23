@@ -11,15 +11,31 @@ import javax.validation.constraints.Size;
 @Table(name = "users")
 public class Users extends CreatedByAndUpdatedBy {
 
+
   @NotBlank(message = "First name is required")
+  @Size(
+          max = 25,
+          min = 1,
+          message = "Provide a first name with more than 1 character and less than 25"
+  )
   @Column(name = "first_name")
   private String firstName;
 
   @NotBlank(message = "Middle name is required")
+  @Size(
+          max = 25,
+          min = 1,
+          message = "Provide a middle name with more than 1 character and less than 25"
+  )
   @Column(name = "middle_name")
   private String middleName;
 
   @NotBlank(message = "Surname is required")
+  @Size(
+          max = 25,
+          min = 1,
+          message = "Provide a surname with more than 1 character and less than 25"
+  )
   @Column(name = "surname")
   private String surname;
 
@@ -27,24 +43,37 @@ public class Users extends CreatedByAndUpdatedBy {
   private boolean enabled = false;
 
   @NotBlank(message = "Email address is required")
+  @Size(
+          max = 100,
+          min = 1,
+          message = "Provide a email with more than 1 character and less than 100"
+  )
   @Column(name = "email")
   private String email;
 
   @NotBlank(message = "Password is required")
+  @Size(
+          max = 25,
+          min = 7,
+          message = "Provide a Password with more than 7 character and less than 25"
+  )
   @Column(name = "password")
   private String password;
 
   @NotBlank(message = "Phone number is required")
+  @Size(
+          max = 25,
+          min = 10,
+          message = "Provide a phone number with more than 10 character and less than 13"
+  )
   @Column(name = "phone")
   private String phone;
 
   @Transient private String fullName;
 
-  @NotBlank(message = "Usertype is required")
   @Column(name = "user_type_id")
   private Long userTypeId;
 
-  @NotBlank(message = "User group is required")
   @Column(name = "user_group_id")
   private Long userGroupId;
 

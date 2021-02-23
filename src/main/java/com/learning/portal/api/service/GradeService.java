@@ -27,18 +27,18 @@ public class GradeService implements BaseServiceInterface<Grade> {
   }
 
   @Override
-  public boolean update(Grade grade) {
+  public Object update(Grade grade) {
     var record = gradeRepository.findById(grade.getId());
 
     if (record.isPresent()) {
       gradeRepository.save(grade);
       return true;
     }
-    return false;
+    return null;
   }
 
   @Override
-  public boolean delete(Long id) {
+  public Object delete(Long id) {
     var record = gradeRepository.findById(id);
 
     if (record.isPresent()) {
@@ -46,7 +46,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
       grade.setFlag(AppConstants.DELETE_RECORD);
       return true;
     }
-    return false;
+    return null;
   }
 
   @Override

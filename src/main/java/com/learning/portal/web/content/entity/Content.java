@@ -27,7 +27,7 @@ public class Content extends CreatedByAndUpdatedBy {
     private String description;
 
     @Column(name = "content_link")
-    @NotBlank(message = "Content link is reqired")
+    @NotBlank(message = "Content link is required")
     private String contentLink;
 
     @JoinColumn(name = "grade_id",insertable = false,updatable = false,nullable = false)

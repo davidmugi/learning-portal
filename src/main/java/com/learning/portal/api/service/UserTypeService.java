@@ -24,12 +24,12 @@ public class UserTypeService implements BaseServiceInterface<UserTypes> {
     }
 
     @Override
-    public boolean update(UserTypes userTypes) {
+    public Object update(UserTypes userTypes) {
         return false;
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Object delete(Long id) {
         return false;
     }
 
