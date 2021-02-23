@@ -21,6 +21,7 @@ public class ContentController {
     this.contentFacade = contentFacade;
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @GetMapping("/fetch-per-grade/{id}")
   public ResponseEntity<ResponseModel> fetchPerGrade(@RequestParam("id") Long id) {
     var response = contentFacade.fetchContentPerGrade(id);
@@ -31,6 +32,7 @@ public class ContentController {
         .body(response);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @GetMapping("fetch-per-creator/{id}")
   public ResponseEntity<ResponseModel> fetchPerCreator(@RequestParam("id") Long id) {
     var record = contentFacade.fetchContentPerCreator(id);
@@ -41,6 +43,7 @@ public class ContentController {
         .body(record);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @PostMapping("/create")
   public ResponseEntity<ResponseModel> create(
       @RequestBody @Valid Content entity, @RequestParam("file") MultipartFile file)
@@ -53,6 +56,7 @@ public class ContentController {
         .body(responseModel);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<ResponseModel> delete(@RequestParam("id") Long id) {
     var response = contentFacade.delete(id);
@@ -63,6 +67,7 @@ public class ContentController {
         .body(response);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @GetMapping("/fetch-one/{id}")
   public ResponseEntity<ResponseModel> fetchOne(@RequestParam("id") Long id) {
     var response = contentFacade.readId(id);
@@ -73,6 +78,7 @@ public class ContentController {
         .body(response);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @GetMapping("/fetch-all")
   public ResponseEntity<ResponseModel> fetchAll() {
     var response = contentFacade.readAll();

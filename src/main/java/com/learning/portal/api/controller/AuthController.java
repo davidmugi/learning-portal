@@ -29,6 +29,7 @@ public class AuthController {
 
   @Autowired private JwtConfig jwtConfig;
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @PostMapping("auth")
   public ResponseEntity auth(@RequestBody AuthenticationRequest request) throws BadCredentialsException{
 
@@ -45,6 +46,7 @@ public class AuthController {
     return ResponseEntity.ok(new AuthenticationResponse(token));
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000"})
   @GetMapping("let")
   public ResponseEntity let(){
     return ResponseEntity.ok("okay");
