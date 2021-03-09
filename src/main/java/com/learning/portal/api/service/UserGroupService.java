@@ -6,6 +6,8 @@ import com.learning.portal.web.usermanager.entity.UserGroups;
 import com.learning.portal.web.usermanager.repository.UserGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +59,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public List<UserGroups> fetchAll() {
-    var record = userGroupRepository.findAll();
+    var record = userGroupRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
     return (List<UserGroups>) record;
   }
 

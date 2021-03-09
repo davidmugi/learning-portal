@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,10 +24,16 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   @Override
   public ResponseModel<Meetings> create(Meetings meetings) {
-    Users users = userService.getLoginUSer().get();
-    meetings.setCreatedBy(users.getId());
 
+    if (meetingService.validationCheck(meetings) != null) {
+      return responseModel(null, meetingService.validationCheck(meetings));
+    }
+
+    meetings.createBy(userService.getUserId());
+    meetings.createDate();
+    meetings.setFlag(AppConstants.ACTIVE_RECORD);
     var meeting = meetingService.create(meetings);
+
 
     String message =
         (meeting == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;
@@ -39,6 +46,9 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
     Users users = userService.getLoginUSer().get();
     meetings.setLastModifiedBy(users.getId());
 
+    meetings.updatedBy(userService.getUserId());
+    meetings.updateDate();
+    meetings.setFlag(AppConstants.ACTIVE_RECORD);
     var meeting = meetingService.update(meetings);
 
     String message =

@@ -6,9 +6,11 @@ import com.learning.portal.web.usermanager.entity.Users;
 import com.learning.portal.web.usermanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,8 @@ public class UserService implements BaseServiceInterface<Users> {
 
   @Override
   public Users create(Users users) {
+    users.setCreatedDate(new Date());
+    users.setLastModifiedDate(new Date());
     var record = userRepository.save(users);
 
     if (record == null) {
@@ -33,6 +37,7 @@ public class UserService implements BaseServiceInterface<Users> {
   public Object update(Users users) {
     var record = userRepository.findById(users.getId());
     if (record.isPresent()) {
+      users.setLastModifiedDate(new Date());
       userRepository.save(users);
       return true;
     }
@@ -60,7 +65,7 @@ public class UserService implements BaseServiceInterface<Users> {
 
   @Override
   public List<Users> fetchAll() {
-    return (List<Users>) userRepository.findAll();
+    return (List<Users>) userRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
   }
 
   public Optional<Users> getLoginUSer() {
@@ -69,5 +74,11 @@ public class UserService implements BaseServiceInterface<Users> {
       return userRepository.findByEmail(user.getName());
     }
     return Optional.empty();
+  }
+
+  public Long getUserId() {
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Users users = userRepository.findByEmail(user.getUsername()).get();
+    return users.getId();
   }
 }

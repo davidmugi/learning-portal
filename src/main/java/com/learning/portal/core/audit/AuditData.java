@@ -65,4 +65,15 @@ public class AuditData implements Serializable {
   public void setFlag(String flag) {
     this.flag = flag;
   }
+
+  public AuditData createDate(){
+    this.createdDate = new Date(System.currentTimeMillis());
+    this.lastModifiedDate = new Date(System.currentTimeMillis());
+    return this;
+  }
+
+  public AuditData updateDate(){
+    this.lastModifiedDate = new Date(System.currentTimeMillis());
+    return this;
+  }
 }

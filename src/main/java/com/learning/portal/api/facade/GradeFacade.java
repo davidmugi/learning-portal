@@ -3,6 +3,7 @@ package com.learning.portal.api.facade;
 import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.GradeService;
+import com.learning.portal.api.service.UserService;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.web.classes.entity.Grade;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   private final GradeService gradeService;
 
+  private final UserService userService;
+
   @Override
   public ResponseModel<Grade> create(Grade grade) {
     Grade record;
@@ -29,8 +32,8 @@ public class GradeFacade implements FacadeInterface<Grade> {
     }
 
     grade.setFlag(AppConstants.ACTIVE_RECORD);
-    grade.setCreatedDate(new Date());
-    grade.setLastModifiedDate(new Date());
+    grade.createDate();
+    grade.createBy(userService.getUserId());
     record = gradeService.create(grade);
 
     String message =
@@ -41,6 +44,9 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   @Override
   public ResponseModel<Grade> update(Grade grade) {
+
+    grade.updateDate();
+    grade.updatedBy(userService.getUserId());
     var record = gradeService.update(grade);
 
     String message =

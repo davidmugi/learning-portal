@@ -24,7 +24,15 @@ public class Meetings extends CreatedByAndUpdatedBy {
     )
     @Column(name = "start_time")
     @NotBlank(message = "Start time required")
-    private Date startTime;
+    private String startTime;
+
+    @JsonFormat(
+            shape = JsonFormat.Shape.STRING,
+            pattern = "dd-MM-yyyy hh:mm:ss"
+    )
+    @Column(name = "end_time")
+    @NotBlank(message = "End time required")
+    private String endTime;
 
     @Column(name = "grade_id")
     private Long gradeId;
@@ -41,16 +49,24 @@ public class Meetings extends CreatedByAndUpdatedBy {
         this.name = name;
     }
 
-    public Date getStartTime() {
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getStartTime() {
         return startTime;
     }
 
-    @JsonFormat(
-            shape = JsonFormat.Shape.STRING,
-            pattern = "dd-MM-yyyy hh:mm:ss"
-    )
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public void setGradeLink(Grade gradeLink) {
+        this.gradeLink = gradeLink;
     }
 
     public Long getGradeId() {

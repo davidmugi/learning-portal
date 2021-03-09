@@ -34,6 +34,8 @@ public class UserFacade implements FacadeInterface<Users> {
 
     users.setEnabled(true);
     users.setPassword(password);
+    users.createBy(userService.getUserId());
+    users.createDate();
     record = userService.create(users);
 
     String message =
@@ -44,6 +46,9 @@ public class UserFacade implements FacadeInterface<Users> {
 
   @Override
   public ResponseModel<Users> update(Users users) {
+
+    users.updateDate();
+    users.updatedBy(userService.getUserId());
     var record = userService.update(users);
 
     String message =

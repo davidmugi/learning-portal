@@ -57,7 +57,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
 
   @Override
   public List<Grade> fetchAll() {
-    return (List<Grade>) gradeRepository.findAll();
+    return (List<Grade>) gradeRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
   }
 
   public String validationRules(Grade grade) {
