@@ -38,4 +38,15 @@ public class CreatedByAndUpdatedBy extends AuditData {
   public void setLastModifiedBy(Long lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
+
+  public CreatedByAndUpdatedBy createBy(Long userId){
+    this.createdBy = userId;
+    this.lastModifiedBy = userId;
+    return this;
+  }
+
+  public CreatedByAndUpdatedBy updatedBy(Long userId){
+    this.lastModifiedBy = userId;
+    return this;
+  }
 }

@@ -63,14 +63,26 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Override
   public List<Meetings> fetchAll() {
-    return (List<Meetings>) meetingRepository.findAll();
+    return (List<Meetings>) meetingRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
   }
 
-  public List<Meetings> fetchPerGrade(Long gradeId){
-    return meetingRepository.findAllByGradeId(gradeId);
+  public List<Meetings> fetchPerGrade(Long gradeId) {
+    return meetingRepository.findAllByGradeIdAndFlag(gradeId,AppConstants.ACTIVE_RECORD);
   }
 
-  public List<Meetings> fetchPerCreator(Long userId){
-    return meetingRepository.findAllByCreatedBy(userId);
+  public List<Meetings> fetchPerCreator(Long userId) {
+    return meetingRepository.findAllByCreatedByAndFlag(userId,AppConstants.ACTIVE_RECORD);
+  }
+
+  public String validationCheck(Meetings meetings) {
+    List<Meetings> meetingsList =
+        meetingRepository.findAllByGradeIdAndStartTimeAndEndTimeAndFlag(
+            meetings.getGradeId(), meetings.getStartTime(), meetings.getEndTime(),AppConstants.ACTIVE_RECORD);
+
+
+    if (!meetingsList.isEmpty()){
+      return "There is an existing meeting at that time";
+    }
+    return null;
   }
 }

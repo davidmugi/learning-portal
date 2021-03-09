@@ -3,6 +3,7 @@ package com.learning.portal.api.facade;
 import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.UserGroupService;
+import com.learning.portal.api.service.UserService;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.web.usermanager.entity.PermissionGroups;
 import com.learning.portal.web.usermanager.entity.Permissions;
@@ -24,6 +25,8 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   private final UserGroupService userGroupService;
 
+  private final UserService userService;
+
   private final PermissionRepository permissionRepository;
 
   @Override
@@ -36,6 +39,8 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
     }
 
     userGroups.setFlag("1");
+    userGroups.createDate();
+    userGroups.createBy(userService.getUserId());
     record = userGroupService.create(userGroups);
 
     updatePermissions(userGroups);
@@ -48,6 +53,9 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   @Override
   public ResponseModel<UserGroups> update(UserGroups userGroups) {
+
+    userGroups.updatedBy(userService.getUserId());
+    userGroups.updateDate();
     var record = userGroupService.update(userGroups);
 
     String message =
@@ -100,13 +108,13 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
     return responseModel;
   }
 
-  private void updatePermissions(UserGroups userGroups){
+  private void updatePermissions(UserGroups userGroups) {
     var permissionList = permissionRepository.findAllById(userGroups.getPermissionIds());
     List<Permissions> permissions = new ArrayList<>();
 
-    if (permissionList.iterator().hasNext()){
-      permissions = StreamSupport.stream(permissionList.spliterator(),false)
-                    .collect(Collectors.toList());
+    if (permissionList.iterator().hasNext()) {
+      permissions =
+          StreamSupport.stream(permissionList.spliterator(), false).collect(Collectors.toList());
     }
     userGroups.setPermissions(permissions);
     userGroupService.update(userGroups);
