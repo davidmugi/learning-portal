@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Table(name = "amazon-config")
 public class AmazonConfig extends AuditData {
 
-    public static final String s3AWS = "s3AWS";
+    public static final String s3AWS = "S3DO";
 
     @Column(name = "name")
     @NotBlank(message = "Name is required")
