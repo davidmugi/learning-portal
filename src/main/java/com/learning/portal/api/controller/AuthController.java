@@ -50,7 +50,7 @@ public class AuthController {
   }
 
   @CrossOrigin(origins ={ "http://localhost:3000"})
-  @PostMapping("profile")
+  @GetMapping("profile")
   public ResponseEntity<ResponseModel> auth(){
     return ResponseEntity.ok(userFacade.getProfile());
   }
