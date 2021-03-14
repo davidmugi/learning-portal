@@ -2,9 +2,13 @@ package com.learning.portal.core.aws;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -47,17 +51,25 @@ public class AmazonService implements AmazonServiceInterface {
 
   private String uploadFile(File file, String fileName) {
     AmazonConfig amazonConfig = amazonConfigRepository.findByName(AmazonConfig.s3AWS).get();
-    BasicAWSCredentials awsCreds =
-        new BasicAWSCredentials(amazonConfig.getAccessKey(), amazonConfig.getSecretKey());
-    AmazonS3 s3Client = new AmazonS3Client(awsCreds);
+    AWSCredentialsProvider awscp =
+        new AWSStaticCredentialsProvider(
+            new BasicAWSCredentials(amazonConfig.getAccessKey(), amazonConfig.getSecretKey()));
+
+    AmazonS3 space =
+        AmazonS3ClientBuilder.standard()
+            .withCredentials(awscp)
+            .withEndpointConfiguration(
+                new AwsClientBuilder.EndpointConfiguration("fra1.digitaloceanspaces.com", " FRA1"))
+            .build();
+
 
     try {
       LOGGER.info("Uploading file to S3 Bucket");
       LOGGER.info("==================================================================");
       // Upload file
-      if (s3Client.doesBucketExist(amazonConfig.getBucketName())) {
+      if (space.doesBucketExist(amazonConfig.getBucketName())) {
         LOGGER.info("Bucket was found");
-        s3Client.putObject(
+        space.putObject(
             new PutObjectRequest(amazonConfig.getBucketName(), fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         LOGGER.info("==================================================================");
@@ -83,14 +95,14 @@ public class AmazonService implements AmazonServiceInterface {
     }
     // Generate file url
     if (!StringUtils.isEmpty(fileName)) {
-      UriComponents uriComponents =
-          UriComponentsBuilder.newInstance()
+      UriComponents uriComponentsBuilder = UriComponentsBuilder.newInstance()
               .scheme("https")
               .host(amazonConfig.getS3Url())
-              .path("/" + amazonConfig.getBucketName().substring(9) + "/" + fileName)
+              .path(fileName)
               .build()
               .encode();
-      return uriComponents.toString();
+
+      return uriComponentsBuilder.toString();
     }
     return "";
   }

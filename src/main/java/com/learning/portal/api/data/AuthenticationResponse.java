@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-public class AuthenticationResponse {
+public class AuthenticationResponse<E> {
 
     private String jwt;
 
     private String message;
+
+    private E data;
 
     public AuthenticationResponse() {
     }
@@ -24,5 +26,13 @@ public class AuthenticationResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public E getData() {
+        return data;
+    }
+
+    public void setData(E data) {
+        this.data = data;
     }
 }

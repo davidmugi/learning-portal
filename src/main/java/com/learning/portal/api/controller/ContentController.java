@@ -4,6 +4,7 @@ import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.facade.ContentFacade;
 import com.learning.portal.web.content.entity.Content;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,9 +45,9 @@ public class ContentController {
   }
 
   @CrossOrigin(origins ={ "http://localhost:3000"})
-  @PostMapping("/create")
+  @PostMapping( "/create")
   public ResponseEntity<ResponseModel> create(
-      @RequestBody @Valid Content entity, @RequestParam("file") MultipartFile file)
+       @RequestParam("file") MultipartFile file,Content entity)
       throws IOException {
     ResponseModel responseModel = contentFacade.create(entity, file);
     Boolean isSuccess = responseModel.getStatus().equals("00");

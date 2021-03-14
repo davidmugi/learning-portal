@@ -6,6 +6,7 @@ import com.learning.portal.core.audit.CreatedByAndUpdatedBy;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -60,6 +61,12 @@ public class Users extends CreatedByAndUpdatedBy {
   @Column(name = "password")
   private String password;
 
+  @Transient
+  private List<String> permissions;
+
+  @Transient
+  private String fullName;
+
   @NotBlank(message = "Phone number is required")
   @Size(
           max = 25,
@@ -69,7 +76,7 @@ public class Users extends CreatedByAndUpdatedBy {
   @Column(name = "phone")
   private String phone;
 
-  @Transient private String fullName;
+
 
   @Column(name = "user_type_id")
   private Long userTypeId;
@@ -158,8 +165,17 @@ public class Users extends CreatedByAndUpdatedBy {
     return enabled;
   }
 
+
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
+  }
+
+  public List<String> getPermissions() {
+    return permissions;
+  }
+
+  public void setPermissions(List<String> permissions) {
+    this.permissions = permissions;
   }
 
   @JsonIgnore

@@ -4,6 +4,7 @@ import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.UserService;
 import com.learning.portal.core.template.AppConstants;
+import com.learning.portal.web.usermanager.entity.Permissions;
 import com.learning.portal.web.usermanager.entity.Users;
 import com.learning.portal.web.usermanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +39,7 @@ public class UserFacade implements FacadeInterface<Users> {
     users.setPassword(password);
     users.createBy(userService.getUserId());
     users.createDate();
+    users.setFlag(AppConstants.ACTIVE_RECORD);
     record = userService.create(users);
 
     String message =
@@ -49,6 +53,7 @@ public class UserFacade implements FacadeInterface<Users> {
 
     users.updateDate();
     users.updatedBy(userService.getUserId());
+    users.setFlag(AppConstants.ACTIVE_RECORD);
     var record = userService.update(users);
 
     String message =
@@ -114,5 +119,28 @@ public class UserFacade implements FacadeInterface<Users> {
     }
 
     return message;
+  }
+
+  public ResponseModel getProfile() {
+    var users = userService.getLoginUSer().get();
+    List<Permissions> permissions = new ArrayList<>();
+    List<String> permissionsId = new ArrayList<>();
+
+    permissions = users.getUserGroupsLink().getPermissions();
+
+    permissions.stream()
+        .forEach(
+            p -> {
+              permissionsId.add(p.getName());
+            });
+
+
+    users.setPermissions(permissionsId);
+    ResponseModel responseModel = new ResponseModel();
+    responseModel.setStatus("00");
+    responseModel.setMessage("Profile fetched successful");
+    responseModel.setData(users);
+
+    return responseModel;
   }
 }

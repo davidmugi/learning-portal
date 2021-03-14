@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "amazon-config")
+@Table(name = "amazon_config")
 public class AmazonConfig extends AuditData {
 
     public static final String s3AWS = "S3DO";
@@ -18,15 +18,15 @@ public class AmazonConfig extends AuditData {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Column(name = "access-key")
+    @Column(name = "access_key")
     @NotBlank(message = "Access key is required")
     private String accessKey;
 
-    @Column(name = "secret-key")
+    @Column(name = "secret_key")
     @NotBlank(message = "Secret key is required")
     private String secretKey;
 
-    @Column(name = "bucket-name")
+    @Column(name = "bucket_name")
     @NotBlank(message = "Bucket name is required")
     private String bucketName;
 
