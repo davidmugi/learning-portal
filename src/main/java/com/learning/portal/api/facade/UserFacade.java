@@ -136,6 +136,7 @@ public class UserFacade implements FacadeInterface<Users> {
 
 
     users.setPermissions(permissionsId);
+    users.setUserType(users.getUserTypesLink().getCode());
     ResponseModel responseModel = new ResponseModel();
     responseModel.setStatus("00");
     responseModel.setMessage("Profile fetched successful");
