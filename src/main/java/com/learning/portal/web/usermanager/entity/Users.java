@@ -65,6 +65,9 @@ public class Users extends CreatedByAndUpdatedBy {
   private List<String> permissions;
 
   @Transient
+  private String userType;
+
+  @Transient
   private String fullName;
 
   @NotBlank(message = "Phone number is required")
@@ -176,6 +179,14 @@ public class Users extends CreatedByAndUpdatedBy {
 
   public void setPermissions(List<String> permissions) {
     this.permissions = permissions;
+  }
+
+  public String getUserType() {
+    return userType;
+  }
+
+  public void setUserType(String userType) {
+    this.userType = userType;
   }
 
   @JsonIgnore
