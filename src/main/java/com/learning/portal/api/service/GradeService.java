@@ -52,7 +52,10 @@ public class GradeService implements BaseServiceInterface<Grade> {
   @Override
   public Optional<Grade> fetchOne(Long id) {
     var record = gradeRepository.findById(id);
-    return record;
+    if (record.isPresent()){
+      return record;
+    }
+    return null;
   }
 
   @Override

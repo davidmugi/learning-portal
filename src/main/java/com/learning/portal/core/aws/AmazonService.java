@@ -111,18 +111,26 @@ public class AmazonService implements AmazonServiceInterface {
   public boolean deleteFile(String filename) {
     boolean deleted = false;
     AmazonConfig amazonConfig = amazonConfigRepository.findByName(AmazonConfig.s3AWS).get();
+    AWSCredentialsProvider awscp =
+            new AWSStaticCredentialsProvider(
+                    new BasicAWSCredentials(amazonConfig.getAccessKey(), amazonConfig.getSecretKey()));
 
-    BasicAWSCredentials awsCreds =
-        new BasicAWSCredentials(amazonConfig.getAccessKey(), amazonConfig.getSecretKey());
-    AmazonS3 s3Client = new AmazonS3Client(awsCreds);
+    AmazonS3 space =
+            AmazonS3ClientBuilder.standard()
+                    .withCredentials(awscp)
+                    .withEndpointConfiguration(
+                            new AwsClientBuilder.EndpointConfiguration("fra1.digitaloceanspaces.com", " FRA1"))
+                    .build();
+
+
     try {
       // Delete file
-      if (s3Client.doesBucketExistV2(amazonConfig.getBucketName())) {
+      if (space.doesBucketExistV2(amazonConfig.getBucketName())) {
         LOGGER.info("==================================================================");
         LOGGER.info("Deleting profile pic");
-        boolean exists = s3Client.doesObjectExist(amazonConfig.getBucketName(), filename);
+        boolean exists = space.doesObjectExist(amazonConfig.getBucketName(), filename);
         if (exists)
-          s3Client.deleteObject(new DeleteObjectRequest(amazonConfig.getBucketName(), filename));
+          space.deleteObject(new DeleteObjectRequest(amazonConfig.getBucketName(), filename));
         deleted = true;
         LOGGER.info("==================================================================");
       }

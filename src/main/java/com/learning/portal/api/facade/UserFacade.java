@@ -67,7 +67,7 @@ public class UserFacade implements FacadeInterface<Users> {
     Optional<Users> record = userService.fetchOne(id);
 
     String message =
-        (record.isPresent()) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
 
     return responseModel(record, message);
   }
