@@ -41,6 +41,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
     userGroups.setFlag("1");
     userGroups.createDate();
     userGroups.createBy(userService.getUserId());
+    userGroups.setFlag(AppConstants.ACTIVE_RECORD);
     record = userGroupService.create(userGroups);
 
     updatePermissions(userGroups);
@@ -54,6 +55,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
   @Override
   public ResponseModel<UserGroups> update(UserGroups userGroups) {
 
+    userGroups.setFlag(AppConstants.ACTIVE_RECORD);
     userGroups.updatedBy(userService.getUserId());
     userGroups.updateDate();
     var record = userGroupService.update(userGroups);

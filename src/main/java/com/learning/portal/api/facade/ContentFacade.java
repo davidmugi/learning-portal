@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -47,6 +48,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     content.setLastModifiedDate(new Date());
     content.setCreatedBy(users.getId());
     content.setContentLink(url);
+    content.setFlag(AppConstants.ACTIVE_RECORD);
     content.setFileServeName(filename);
 
     var record = contentService.create(content);
@@ -59,6 +61,32 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   @Override
   public ResponseModel<Content> update(Content content) {
+    return null;
+  }
+
+  public ResponseModel<Content> update(Content content, MultipartFile file,Long id) throws IOException {
+    Optional<Content> oOldContent = contentService.fetchOne(id);
+    Users users = userService.getLoginUSer().get();
+
+    String originalFileName = file.getOriginalFilename();
+    String ext = FilenameUtils.getExtension(originalFileName);
+    String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
+
+    if (oOldContent.isEmpty()){
+      return responseModel(null,AppConstants.FAIL_UPDATE_MESSAGE);
+    }
+    Content oldContent = oOldContent.get();
+
+
+    amazonServiceInterface.deleteFile(oldContent.getFileServeName());
+    String url = amazonServiceInterface.uploadMultipartFile(file,filename);
+
+
+    content.setContentLink(url);
+    content.setFileServeName(filename);
+    content.updateDate();
+    content.updatedBy(users.getId());
+    content.setFlag(AppConstants.ACTIVE_RECORD);
     var record = contentService.update(content);
 
     String message =
@@ -72,7 +100,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     var record = contentService.fetchOne(id);
 
     String message =
-        (record.isPresent()) ? AppConstants.SUCCESS_FETCH_MESSAGE : AppConstants.FAIL_FETCH_MESSAGE;
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE: AppConstants.SUCCESS_FETCH_MESSAGE ;
 
     return responseModel(record, message);
   }
@@ -89,12 +117,19 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   @Override
   public ResponseModel<Content> delete(Long id) {
-    var record = contentService.delete(id);
+    var content = contentService.fetchOne(id);
 
-    String message =
-        (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+    boolean success = amazonServiceInterface.deleteFile(content.get().getFileServeName());
 
-    return responseModel(record, message);
+    if (success) {
+      var record = contentService.delete(id);
+      content.get().setContentLink(null);
+
+      String message =
+          (record == null && !success) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
+      return responseModel(record, message);
+    }
+    return responseModel(null,AppConstants.FAIL_DELETE_MESSAGE);
   }
 
   private ResponseModel responseModel(Object record, String message) {

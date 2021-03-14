@@ -55,7 +55,11 @@ public class ContentService implements BaseServiceInterface<Content> {
   @Override
   public Optional<Content> fetchOne(Long id) {
     var record = contentRepository.findById(id);
-    return record;
+
+    if (record.isPresent()){
+      return record;
+    }
+   return null;
   }
 
   @Override

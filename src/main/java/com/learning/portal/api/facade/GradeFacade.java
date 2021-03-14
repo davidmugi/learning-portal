@@ -59,9 +59,7 @@ public class GradeFacade implements FacadeInterface<Grade> {
     Optional<Grade> record = gradeService.fetchOne(id);
 
     String message =
-        (!record.isPresent())
-            ? AppConstants.FAIL_FETCH_MESSAGE
-            : AppConstants.SUCCESS_FETCH_MESSAGE;
+        (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
 
     return responseModel(record, message);
   }

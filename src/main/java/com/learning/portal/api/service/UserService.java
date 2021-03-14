@@ -60,7 +60,10 @@ public class UserService implements BaseServiceInterface<Users> {
   @Override
   public Optional<Users> fetchOne(Long id) {
     var record = userRepository.findById(id);
-    return record;
+    if (record.isPresent()){
+      return record;
+    }
+    return null;
   }
 
   @Override
