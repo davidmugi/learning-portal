@@ -37,7 +37,7 @@ public class ContentFacade implements FacadeInterface<Content> {
   public ResponseModel<Content> create(Content content, MultipartFile file) throws IOException {
     String originalFileName = file.getOriginalFilename();
     String ext = FilenameUtils.getExtension(originalFileName);
-    String filename = String.format("profile-%s.%s", UUID.randomUUID().toString(), ext);
+    String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
 
     String url = amazonServiceInterface.uploadMultipartFile(file, filename);
 
@@ -47,6 +47,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     content.setLastModifiedDate(new Date());
     content.setCreatedBy(users.getId());
     content.setContentLink(url);
+    content.setFileServeName(filename);
 
     var record = contentService.create(content);
 

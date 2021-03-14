@@ -77,8 +77,10 @@ public class UserService implements BaseServiceInterface<Users> {
   }
 
   public Long getUserId() {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Users users = userRepository.findByEmail(user.getUsername()).get();
-    return users.getId();
+    var user = SecurityContextHolder.getContext().getAuthentication();
+    if (user.isAuthenticated()) {
+      return userRepository.findByEmail(user.getName()).get().getId();
+    }
+    return null;
   }
 }
