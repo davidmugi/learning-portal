@@ -64,14 +64,14 @@ public class ContentService implements BaseServiceInterface<Content> {
 
   @Override
   public List<Content> fetchAll() {
-    return (List<Content>) contentRepository.findAll();
+    return (List<Content>) contentRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
   }
 
   public List<Content> fetchPerGrade(Long gradeId) {
-    return contentRepository.findAllByGradeId(gradeId);
+    return contentRepository.findAllByGradeIdAndFlag(gradeId,AppConstants.ACTIVE_RECORD);
   }
 
   public List<Content> fetchPerCreator(Long userId) {
-    return contentRepository.findAllByCreatedBy(userId);
+    return contentRepository.findAllByCreatedByAndFlag(userId,AppConstants.ACTIVE_RECORD);
   }
 }

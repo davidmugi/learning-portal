@@ -7,8 +7,10 @@ import java.util.List;
 
 public interface ContentRepository extends CrudRepository<Content,Long> {
 
-    public List<Content> findAllByGradeId(Long gradeId);
+    public List<Content> findAllByGradeIdAndFlag(Long gradeId,String flag);
 
-    public List<Content> findAllByCreatedBy(Long userId);
+    public List<Content> findAllByCreatedByAndFlag(Long userId,String flag);
+
+    public List<Content> findAllByFlag(String flag);
 
 }

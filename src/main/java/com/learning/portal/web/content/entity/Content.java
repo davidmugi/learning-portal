@@ -19,7 +19,6 @@ public class Content extends CreatedByAndUpdatedBy {
   private String name;
 
   @Column(name = "grade_id")
-  @NotBlank(message = "Garde is required")
   private Long gradeId;
 
   @Column(name = "description")
@@ -30,7 +29,6 @@ public class Content extends CreatedByAndUpdatedBy {
   private String fileServeName;
 
   @Column(name = "content_link")
-  @NotBlank(message = "Content link is required")
   private String contentLink;
 
   @JoinColumn(name = "grade_id", insertable = false, updatable = false, nullable = false)

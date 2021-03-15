@@ -119,11 +119,13 @@ public class ContentFacade implements FacadeInterface<Content> {
   public ResponseModel<Content> delete(Long id) {
     var content = contentService.fetchOne(id);
 
+
     boolean success = amazonServiceInterface.deleteFile(content.get().getFileServeName());
 
     if (success) {
       var record = contentService.delete(id);
       content.get().setContentLink(null);
+      content.get().setFlag(AppConstants.DELETE_RECORD);
 
       String message =
           (record == null && !success) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
