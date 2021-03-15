@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Content extends CreatedByAndUpdatedBy {
 
   @Column(name = "name")
-  @Size(max = 100, min = 5)
+  @Size(max = 100, min = 2)
   @NotBlank(message = "Name is required")
   private String name;
 

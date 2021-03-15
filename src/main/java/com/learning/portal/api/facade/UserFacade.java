@@ -48,6 +48,30 @@ public class UserFacade implements FacadeInterface<Users> {
     return responseModel(record, message);
   }
 
+
+  public ResponseModel<Users> signUp(Users users) {
+    Users record;
+    String password = new BCryptPasswordEncoder().encode(users.getPassword());
+    String validationMessage = validationCheck(users);
+
+    if (validationMessage != null) {
+      return responseModel(null, validationMessage);
+    }
+
+    users.setEnabled(true);
+    users.setUserTypeId(3L);
+    users.setUserGroupId(3L);
+    users.setPassword(password);
+    users.createDate();
+    users.setFlag(AppConstants.ACTIVE_RECORD);
+    record = userService.create(users);
+
+    String message =
+            (record == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;
+
+    return responseModel(record, message);
+  }
+
   @Override
   public ResponseModel<Users> update(Users users) {
 

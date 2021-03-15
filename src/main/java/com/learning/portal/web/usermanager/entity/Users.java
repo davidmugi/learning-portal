@@ -53,11 +53,6 @@ public class Users extends CreatedByAndUpdatedBy {
   private String email;
 
   @NotBlank(message = "Password is required")
-  @Size(
-          max = 25,
-          min = 7,
-          message = "Provide a Password with more than 7 character and less than 25"
-  )
   @Column(name = "password")
   private String password;
 
