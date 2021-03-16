@@ -40,6 +40,9 @@ public class Meetings extends CreatedByAndUpdatedBy {
     @Column(name = "link")
     private String link;
 
+    @Transient
+    private String gradeName;
+
     @JoinColumn(name = "grade_id",updatable = false,insertable = false,nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Grade gradeLink;
@@ -78,6 +81,14 @@ public class Meetings extends CreatedByAndUpdatedBy {
 
     public void setGradeId(Long gradeId) {
         this.gradeId = gradeId;
+    }
+
+    public String getGradeName() {
+        return gradeLink.getName();
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
     }
 
     public String getLink() {
