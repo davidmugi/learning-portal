@@ -14,4 +14,6 @@ public interface UserRepository extends CrudRepository<Users,Long> {
     Optional<Users> findByPhone(String phone);
 
     List<Users> findAllByFlag(String flag);
+
+    List<Users> findByFlagAndGradeId(String flag,Long gradeId);
 }

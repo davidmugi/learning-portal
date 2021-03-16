@@ -1,12 +1,12 @@
 package com.learning.portal.core.audit;
 
+import com.learning.portal.web.classes.entity.Grade;
+import com.learning.portal.web.usermanager.entity.Users;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.util.Date;
 
 @MappedSuperclass
@@ -20,6 +20,7 @@ public class CreatedByAndUpdatedBy extends AuditData {
   @LastModifiedBy
   @Column(name = "last_modified_by")
   private Long lastModifiedBy;
+
 
   public CreatedByAndUpdatedBy() {}
 
@@ -38,6 +39,7 @@ public class CreatedByAndUpdatedBy extends AuditData {
   public void setLastModifiedBy(Long lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
+
 
   public CreatedByAndUpdatedBy createBy(Long userId){
     this.createdBy = userId;

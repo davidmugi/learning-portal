@@ -39,7 +39,6 @@ public class ContentFacade implements FacadeInterface<Content> {
     String originalFileName = file.getOriginalFilename();
     String ext = FilenameUtils.getExtension(originalFileName);
     String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
-
     String url = amazonServiceInterface.uploadMultipartFile(file, filename);
 
     Users users = userService.getLoginUSer().get();

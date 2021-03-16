@@ -25,6 +25,9 @@ public class Content extends CreatedByAndUpdatedBy {
   @NotBlank(message = "Description is required")
   private String description;
 
+  @Transient
+  private String gradeName;
+
   @Column(name = "file_server_name")
   private String fileServeName;
 
@@ -72,6 +75,13 @@ public class Content extends CreatedByAndUpdatedBy {
     return gradeLink;
   }
 
+  public String getGradeName() {
+    return gradeLink.getName();
+  }
+
+  public void setGradeName(String gradeName) {
+    this.gradeName = gradeName;
+  }
 
   public String getFileServeName() {
     return fileServeName;
