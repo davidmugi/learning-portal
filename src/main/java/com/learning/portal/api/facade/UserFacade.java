@@ -3,6 +3,7 @@ package com.learning.portal.api.facade;
 import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.UserService;
+import com.learning.portal.core.sms.SmsServiceInterface;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.web.usermanager.entity.Permissions;
 import com.learning.portal.web.usermanager.entity.Users;
@@ -24,6 +25,7 @@ public class UserFacade implements FacadeInterface<Users> {
   private final UserRepository userRepository;
 
   private final UserService userService;
+
 
   @Override
   public ResponseModel<Users> create(Users users) {

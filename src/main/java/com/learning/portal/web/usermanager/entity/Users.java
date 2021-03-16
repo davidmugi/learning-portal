@@ -59,6 +59,9 @@ public class Users extends CreatedByAndUpdatedBy {
   @Transient
   private List<String> permissions;
 
+  @Column(name = "grade_Id")
+  private Long gradeId;
+
   @Transient
   private String userType;
 
@@ -134,6 +137,13 @@ public class Users extends CreatedByAndUpdatedBy {
     return this.firstName +" "+ this.surname;
   }
 
+  public Long getGradeId() {
+    return gradeId;
+  }
+
+  public void setGradeId(Long gradeId) {
+    this.gradeId = gradeId;
+  }
 
   public String getPassword() {
     return password;
