@@ -37,11 +37,9 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
     if (record != null) {
       List<String> phoneNumber = new ArrayList<>();
-
       for (Users users : fetchUsers(meetings)) {
         phoneNumber.add(users.getPhone());
       }
-
       Object[] objects = new Object[] {meetings.getStartTime(), meetings.getLink()};
 //
 //      if (!phoneNumber.isEmpty()) {

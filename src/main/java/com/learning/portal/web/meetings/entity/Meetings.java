@@ -40,6 +40,9 @@ public class Meetings extends CreatedByAndUpdatedBy {
     @Column(name = "link")
     private String link;
 
+    @Column(name = "password")
+    private String password;
+
     @Transient
     private String gradeName;
 
@@ -71,9 +74,6 @@ public class Meetings extends CreatedByAndUpdatedBy {
         this.startTime = startTime;
     }
 
-    public void setGradeLink(Grade gradeLink) {
-        this.gradeLink = gradeLink;
-    }
 
     public Long getGradeId() {
         return gradeId;
@@ -84,7 +84,7 @@ public class Meetings extends CreatedByAndUpdatedBy {
     }
 
     public String getGradeName() {
-        return gradeLink.getName();
+        return gradeName;
     }
 
     public void setGradeName(String gradeName) {
@@ -99,10 +99,19 @@ public class Meetings extends CreatedByAndUpdatedBy {
         this.link = link;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @JsonIgnore
     public Grade getGradeLink() {
         return gradeLink;
     }
+
 
 
 

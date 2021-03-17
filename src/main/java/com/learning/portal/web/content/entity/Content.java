@@ -76,7 +76,7 @@ public class Content extends CreatedByAndUpdatedBy {
   }
 
   public String getGradeName() {
-    return gradeLink.getName();
+    return gradeName;
   }
 
   public void setGradeName(String gradeName) {
