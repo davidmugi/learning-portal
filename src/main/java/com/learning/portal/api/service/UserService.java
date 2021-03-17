@@ -1,6 +1,7 @@
 package com.learning.portal.api.service;
 
 import com.learning.portal.core.sms.SmsServiceInterface;
+import com.learning.portal.core.sms.twillio.TwillioServiceInterface;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.core.template.BaseServiceInterface;
 import com.learning.portal.web.usermanager.entity.Users;
@@ -14,10 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -26,8 +24,10 @@ public class UserService implements BaseServiceInterface<Users> {
 
   private final UserRepository userRepository;
   private final SmsServiceInterface smsServiceInterface;
+  private final TwillioServiceInterface twillioServiceInterface;
 
   @Autowired private MessageSource smsMessageSource;
+
 
 
   @Override
@@ -42,7 +42,8 @@ public class UserService implements BaseServiceInterface<Users> {
 
     Object[] object = new Object[]{record.getFullName()};
     String message = smsMessageSource.getMessage("welcome.message",object, Locale.ENGLISH);
-    smsServiceInterface.sendSMS(message,record.getPhone());
+    //smsServiceInterface.sendSMS(message,record.getPhone());
+    twillioServiceInterface.sendSms(message, Arrays.asList(record.getPhone()));
     return record;
   }
 

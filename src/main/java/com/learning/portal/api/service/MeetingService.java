@@ -1,6 +1,7 @@
 package com.learning.portal.api.service;
 
 import com.learning.portal.core.sms.SmsServiceInterface;
+import com.learning.portal.core.sms.twillio.TwillioServiceInterface;
 import com.learning.portal.core.template.AppConstants;
 import com.learning.portal.core.template.BaseServiceInterface;
 import com.learning.portal.web.meetings.entity.Meetings;
@@ -29,7 +30,7 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Autowired private MessageSource smsMessageSource;
 
-  private final SmsServiceInterface smsServiceInterface;
+  private final TwillioServiceInterface twillioServiceInterface;
 
   @Override
   public Meetings create(Meetings meetings) {
@@ -41,11 +42,11 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
         phoneNumber.add(users.getPhone());
       }
       Object[] objects = new Object[] {meetings.getStartTime(), meetings.getLink()};
-//
-//      if (!phoneNumber.isEmpty()) {
-//        String message = smsMessageSource.getMessage("meeting.message", objects, Locale.ENGLISH);
-//        smsServiceInterface.sendMultipleUsers(message, phoneNumber);
-//      }
+
+      if (!phoneNumber.isEmpty()) {
+        String message = smsMessageSource.getMessage("meeting.message", objects, Locale.ENGLISH);
+        twillioServiceInterface.sendSms(message,phoneNumber);
+      }
       return record;
     }
     return null;
