@@ -65,7 +65,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   public String validationRules(UserGroups userGroups) {
 
-    Optional<UserGroups> oName = userGroupRepository.findByName(userGroups.getName());
+    Optional<UserGroups> oName = userGroupRepository.findByNameAndFlag(userGroups.getName(),AppConstants.ACTIVE_RECORD);
 
     if (oName.isPresent()) {
       return "User group with the same name already exist";

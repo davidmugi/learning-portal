@@ -64,7 +64,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
   }
 
   public String validationRules(Grade grade) {
-    Optional<Grade> oName = gradeRepository.findByName(grade.getName());
+    Optional<Grade> oName = gradeRepository.findByNameAndFlag(grade.getName(),AppConstants.ACTIVE_RECORD);
 
     if (oName.isPresent()) {
       return "Class already exist";
