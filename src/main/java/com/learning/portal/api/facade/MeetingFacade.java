@@ -34,6 +34,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
     meetings.setFlag(AppConstants.ACTIVE_RECORD);
     var meeting = meetingService.create(meetings);
 
+    meeting.setGradeName(meeting.getGradeLink().getName());
 
     String message =
         (meeting == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;

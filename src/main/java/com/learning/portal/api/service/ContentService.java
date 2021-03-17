@@ -25,7 +25,8 @@ public class ContentService implements BaseServiceInterface<Content> {
     if (record == null) {
       return null;
     }
-    return record;
+    record.setGradeName(record.getGradeLink().getName());
+    return content;
   }
 
   @Override
