@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,7 +33,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
     meetings.createBy(userService.getUserId());
     meetings.createDate();
     meetings.setFlag(AppConstants.ACTIVE_RECORD);
-    var meeting = meetingService.create(meetings);
+    Meetings meeting = meetingService.create(meetings);
 
     meeting.setGradeName(meeting.getGradeLink().getName());
 
@@ -50,7 +51,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
     meetings.updatedBy(userService.getUserId());
     meetings.updateDate();
     meetings.setFlag(AppConstants.ACTIVE_RECORD);
-    var meeting = meetingService.update(meetings);
+    Object meeting = meetingService.update(meetings);
 
     String message =
         (meeting == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
@@ -60,7 +61,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   @Override
   public ResponseModel<Meetings> readId(Long id) {
-    var meeting = meetingService.fetchOne(id);
+    Optional<Meetings> meeting = meetingService.fetchOne(id);
 
     String message =
         (meeting == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -70,7 +71,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   @Override
   public ResponseModel<Meetings> readAll() {
-    var meeting = meetingService.fetchAll();
+    List<Meetings> meeting = meetingService.fetchAll();
 
     String message =
         (meeting == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -80,7 +81,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   @Override
   public ResponseModel<Meetings> delete(Long id) {
-    var meeting = meetingService.delete(id);
+    Object meeting = meetingService.delete(id);
 
     String message =
         (meeting == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
@@ -89,7 +90,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
   }
 
   public ResponseModel<Meetings> fetchPerGrade(Long gradeId) {
-    var meeting = meetingService.fetchPerGrade(gradeId);
+    List<Meetings> meeting = meetingService.fetchPerGrade(gradeId);
 
     String message =
         (meeting == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -98,7 +99,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
   }
 
   public ResponseModel<Meetings> fetchPerCreator(Long userId) {
-    var meeting = meetingService.fetchPerCreator(userId);
+    List<Meetings> meeting = meetingService.fetchPerCreator(userId);
 
     String message =
         (meeting == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -108,7 +109,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   private ResponseModel responseModel(Object record, String message) {
     String status = (record == null) ? "01" : "00";
-    var data = (record == null) ? null : record;
+    Object data = (record == null) ? null : record;
 
     ResponseModel responseModel = new ResponseModel();
     responseModel.setData(data);

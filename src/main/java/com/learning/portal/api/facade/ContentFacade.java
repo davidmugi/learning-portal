@@ -12,10 +12,12 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import com.learning.portal.web.content.entity.Content;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -50,7 +52,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     content.setFlag(AppConstants.ACTIVE_RECORD);
     content.setFileServeName(filename);
 
-    var record = contentService.create(content);
+    Content record = contentService.create(content);
 
     String message =
         (record == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;
@@ -86,7 +88,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     content.updateDate();
     content.updatedBy(users.getId());
     content.setFlag(AppConstants.ACTIVE_RECORD);
-    var record = contentService.update(content);
+    Object record = contentService.update(content);
 
     String message =
         (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
@@ -96,7 +98,7 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   @Override
   public ResponseModel<Content> readId(Long id) {
-    var record = contentService.fetchOne(id);
+    Optional<Content> record = contentService.fetchOne(id);
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE: AppConstants.SUCCESS_FETCH_MESSAGE ;
@@ -106,7 +108,7 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   @Override
   public ResponseModel<Content> readAll() {
-    var record = contentService.fetchAll();
+    List<Content> record = contentService.fetchAll();
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -116,13 +118,13 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   @Override
   public ResponseModel<Content> delete(Long id) {
-    var content = contentService.fetchOne(id);
+    Optional<Content> content = contentService.fetchOne(id);
 
 
     boolean success = amazonServiceInterface.deleteFile(content.get().getFileServeName());
 
     if (success) {
-      var record = contentService.delete(id);
+      Object record = contentService.delete(id);
       content.get().setContentLink(null);
       content.get().setFlag(AppConstants.DELETE_RECORD);
 
@@ -135,7 +137,7 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   private ResponseModel responseModel(Object record, String message) {
     String status = (record == null) ? "01" : "00";
-    var data = (record == null) ? null : record;
+    Object data = (record == null) ? null : record;
 
     ResponseModel responseModel = new ResponseModel();
     responseModel.setStatus(status);
@@ -146,7 +148,7 @@ public class ContentFacade implements FacadeInterface<Content> {
   }
 
   public ResponseModel fetchContentPerGrade(Long gradeId) {
-    var record = contentService.fetchPerGrade(gradeId);
+    List<Content> record = contentService.fetchPerGrade(gradeId);
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -155,7 +157,7 @@ public class ContentFacade implements FacadeInterface<Content> {
   }
 
   public ResponseModel fetchContentPerCreator(Long userId) {
-    var record = contentService.fetchPerCreator(userId);
+    List<Content> record = contentService.fetchPerCreator(userId);
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;

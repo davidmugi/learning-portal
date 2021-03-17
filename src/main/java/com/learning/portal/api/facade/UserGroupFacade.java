@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -58,7 +59,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
     userGroups.setFlag(AppConstants.ACTIVE_RECORD);
     userGroups.updatedBy(userService.getUserId());
     userGroups.updateDate();
-    var record = userGroupService.update(userGroups);
+    Object record = userGroupService.update(userGroups);
 
     String message =
         (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
@@ -68,7 +69,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   @Override
   public ResponseModel<UserGroups> readId(Long id) {
-    var record = userGroupService.fetchOne(id);
+    Optional<UserGroups> record = userGroupService.fetchOne(id);
 
     String message =
         (!record.isPresent())
@@ -80,7 +81,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   @Override
   public ResponseModel<UserGroups> readAll() {
-    var record = userGroupService.fetchAll();
+    Object record = userGroupService.fetchAll();
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -90,7 +91,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   @Override
   public ResponseModel<UserGroups> delete(Long id) {
-    var record = userGroupService.delete(id);
+    Object record = userGroupService.delete(id);
 
     String message =
         (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
