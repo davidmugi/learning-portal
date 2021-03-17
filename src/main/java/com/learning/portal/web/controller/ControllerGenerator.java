@@ -15,31 +15,31 @@ public class ControllerGenerator<T extends Object, F extends FacadeInterface> {
     this.facade = f;
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @PostMapping("/create")
   public ResponseEntity<ResponseModel> create(@RequestBody @Valid T entity){
     return _create(entity);
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @PostMapping("/update")
   public ResponseEntity<ResponseModel> update(@RequestBody @Valid T entity){
     return _update(entity);
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @PostMapping("/delete/{id}")
   public ResponseEntity<ResponseModel> delete(@PathVariable("id") Long id){
     return _delete(id);
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @GetMapping("/read-all")
   public ResponseEntity<ResponseModel> readAll(){
     return _readAll();
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @GetMapping("/read-one/{id}")
   public ResponseEntity<ResponseModel> readOne(@PathVariable("id") Long id){
     return _readOne(id);

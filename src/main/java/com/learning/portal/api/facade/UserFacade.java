@@ -80,7 +80,7 @@ public class UserFacade implements FacadeInterface<Users> {
     users.updateDate();
     users.updatedBy(userService.getUserId());
     users.setFlag(AppConstants.ACTIVE_RECORD);
-    var record = userService.update(users);
+    Object record = userService.update(users);
 
     String message =
         (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
@@ -100,7 +100,7 @@ public class UserFacade implements FacadeInterface<Users> {
 
   @Override
   public ResponseModel<Users> readAll() {
-    var record = userService.fetchAll();
+    List<Users> record = userService.fetchAll();
 
     String message =
         (record == null) ? AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -110,7 +110,7 @@ public class UserFacade implements FacadeInterface<Users> {
 
   @Override
   public ResponseModel<Users> delete(Long id) {
-    var record = userService.delete(id);
+    Object record = userService.delete(id);
 
     String message =
         (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
@@ -120,7 +120,7 @@ public class UserFacade implements FacadeInterface<Users> {
 
   private ResponseModel responseModel(Object record, String message) {
     String status = (record == null) ? "01" : "00";
-    var data = (record == null) ? null : record;
+    Object data = (record == null) ? null : record;
 
     ResponseModel responseModel = new ResponseModel();
     responseModel.setStatus(status);
@@ -148,7 +148,7 @@ public class UserFacade implements FacadeInterface<Users> {
   }
 
   public ResponseModel getProfile() {
-    var users = userService.getLoginUSer().get();
+    Users users = userService.getLoginUSer().get();
     List<Permissions> permissions = new ArrayList<>();
     List<String> permissionsId = new ArrayList<>();
 

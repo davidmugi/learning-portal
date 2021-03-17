@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface GradeRepository extends CrudRepository<Grade, Long> {
 
-    Optional<Grade> findByName(String name);
+    Optional<Grade> findByNameAndFlag(String name,String flag);
 
     public List<Grade> findAllByFlag(String flag);
 }

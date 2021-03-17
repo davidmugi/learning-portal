@@ -20,7 +20,7 @@ public class ContentService implements BaseServiceInterface<Content> {
 
   @Override
   public Content create(Content content) {
-    var record = contentRepository.save(content);
+    Content record = contentRepository.save(content);
 
     if (record == null) {
       return null;
@@ -30,7 +30,7 @@ public class ContentService implements BaseServiceInterface<Content> {
 
   @Override
   public Object update(Content content) {
-    var record = contentRepository.findById(content.getId());
+    Optional<Content> record = contentRepository.findById(content.getId());
 
     if (record.isPresent()) {
       contentRepository.save(content);
@@ -41,7 +41,7 @@ public class ContentService implements BaseServiceInterface<Content> {
 
   @Override
   public Object delete(Long id) {
-    var record = contentRepository.findById(id);
+    Optional<Content> record = contentRepository.findById(id);
 
     if (record.isPresent()) {
       Content content = record.get();
@@ -54,7 +54,7 @@ public class ContentService implements BaseServiceInterface<Content> {
 
   @Override
   public Optional<Content> fetchOne(Long id) {
-    var record = contentRepository.findById(id);
+    Optional<Content> record = contentRepository.findById(id);
 
     if (record.isPresent()){
       return record;

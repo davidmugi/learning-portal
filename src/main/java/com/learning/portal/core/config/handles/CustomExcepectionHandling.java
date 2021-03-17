@@ -35,7 +35,7 @@ public class CustomExcepectionHandling extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = CustomException.class)
     protected ResponseEntity<Object> handle(CustomException exception){
-        var code = (exception.getCode() == 0) ? 400 : exception.getCode();
+        int code = (exception.getCode() == 0) ? 400 : exception.getCode();
 
         ResponseModel responseModel =
                 new ResponseModel("01", exception.getMessage());
@@ -45,7 +45,7 @@ public class CustomExcepectionHandling extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = IOException.class)
     protected ResponseEntity<Object> handleIoException(IOException ioException){
-        var code = HttpStatus.BAD_REQUEST.value();
+        int code = HttpStatus.BAD_REQUEST.value();
 
         ResponseModel responseModel =
                 new ResponseModel("01",ioException.getMessage());
@@ -70,7 +70,7 @@ public class CustomExcepectionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Object> handle(Exception exception) {
         exception.printStackTrace();
-        var code = 400;
+         int code = 400;
         ResponseModel response =
                 new ResponseModel(
                         "01",

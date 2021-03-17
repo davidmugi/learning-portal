@@ -18,7 +18,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
 
   @Override
   public Grade create(Grade grade) {
-    var record = gradeRepository.save(grade);
+    Grade record = gradeRepository.save(grade);
 
     if (record != null) {
       return record;
@@ -28,7 +28,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
 
   @Override
   public Object update(Grade grade) {
-    var record = gradeRepository.findById(grade.getId());
+    Optional<Grade> record = gradeRepository.findById(grade.getId());
 
     if (record.isPresent()) {
       gradeRepository.save(grade);
@@ -39,7 +39,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
 
   @Override
   public Object delete(Long id) {
-    var record = gradeRepository.findById(id);
+    Optional<Grade> record = gradeRepository.findById(id);
 
     if (record.isPresent()) {
       Grade grade = record.get();
@@ -51,7 +51,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
 
   @Override
   public Optional<Grade> fetchOne(Long id) {
-    var record = gradeRepository.findById(id);
+    Optional<Grade> record = gradeRepository.findById(id);
     if (record.isPresent()){
       return record;
     }
@@ -64,7 +64,7 @@ public class GradeService implements BaseServiceInterface<Grade> {
   }
 
   public String validationRules(Grade grade) {
-    Optional<Grade> oName = gradeRepository.findByName(grade.getName());
+    Optional<Grade> oName = gradeRepository.findByNameAndFlag(grade.getName(),AppConstants.ACTIVE_RECORD);
 
     if (oName.isPresent()) {
       return "Class already exist";
