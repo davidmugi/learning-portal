@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.learning.portal.core.audit.AuditData;
-import jdk.jfr.Description;
-import org.w3c.dom.stylesheets.LinkStyle;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
