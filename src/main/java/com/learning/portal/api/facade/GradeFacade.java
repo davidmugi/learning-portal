@@ -47,7 +47,7 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
     grade.updateDate();
     grade.updatedBy(userService.getUserId());
-    var record = gradeService.update(grade);
+    Object record = gradeService.update(grade);
 
     String message =
         (record == null) ? AppConstants.FAIL_UPDATE_MESSAGE : AppConstants.SUCCESS_UPDATE_MESSAGE;
@@ -76,7 +76,7 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   @Override
   public ResponseModel<Grade> delete(Long id) {
-    var record = gradeService.delete(id);
+    Object record = gradeService.delete(id);
 
     String message =
         (record == null) ? AppConstants.FAIL_DELETE_MESSAGE : AppConstants.SUCCESS_DELETE_MESSAGE;
@@ -86,7 +86,7 @@ public class GradeFacade implements FacadeInterface<Grade> {
 
   private ResponseModel responseModel(Object record, String message) {
     String status = (record == null) ? "01" : "00";
-    var data = (record == null) ? null : record;
+    Object data = (record == null) ? null : record;
 
     ResponseModel responseModel = new ResponseModel();
     responseModel.setData(data);

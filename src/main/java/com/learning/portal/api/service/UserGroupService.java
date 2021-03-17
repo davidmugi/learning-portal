@@ -19,7 +19,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public UserGroups create(UserGroups userGroups) {
-    var record = userGroupRepository.save(userGroups);
+    UserGroups record = userGroupRepository.save(userGroups);
 
     if (record == null) {
       return null;
@@ -29,7 +29,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public Object update(UserGroups userGroups) {
-    var record = userGroupRepository.findById(userGroups.getId());
+    Optional<UserGroups> record = userGroupRepository.findById(userGroups.getId());
 
     if (record.isPresent()) {
       userGroupRepository.save(userGroups);
@@ -40,7 +40,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public Object delete(Long id) {
-    var record = userGroupRepository.findById(id);
+    Optional<UserGroups> record = userGroupRepository.findById(id);
 
     if (record.isPresent()) {
       UserGroups userGroups = record.get();
@@ -53,19 +53,19 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public Optional<UserGroups> fetchOne(Long id) {
-    var record = userGroupRepository.findById(id);
+    Optional<UserGroups> record = userGroupRepository.findById(id);
     return record;
   }
 
   @Override
   public List<UserGroups> fetchAll() {
-    var record = userGroupRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
+    List<UserGroups> record = userGroupRepository.findAllByFlag(AppConstants.ACTIVE_RECORD);
     return (List<UserGroups>) record;
   }
 
   public String validationRules(UserGroups userGroups) {
 
-    Optional<UserGroups> oName = userGroupRepository.findByName(userGroups.getName());
+    Optional<UserGroups> oName = userGroupRepository.findByNameAndFlag(userGroups.getName(),AppConstants.ACTIVE_RECORD);
 
     if (oName.isPresent()) {
       return "User group with the same name already exist";

@@ -1,6 +1,6 @@
 package com.learning.portal.core.audit;
 
-import com.sun.source.doctree.SerialDataTree;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

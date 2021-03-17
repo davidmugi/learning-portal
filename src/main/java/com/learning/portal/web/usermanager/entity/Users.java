@@ -2,6 +2,7 @@ package com.learning.portal.web.usermanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.learning.portal.core.audit.CreatedByAndUpdatedBy;
+import com.learning.portal.web.classes.entity.Grade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,31 +13,27 @@ import java.util.List;
 @Table(name = "users")
 public class Users extends CreatedByAndUpdatedBy {
 
-
   @NotBlank(message = "First name is required")
   @Size(
-          max = 25,
-          min = 1,
-          message = "Provide a first name with more than 1 character and less than 25"
-  )
+      max = 25,
+      min = 1,
+      message = "Provide a first name with more than 1 character and less than 25")
   @Column(name = "first_name")
   private String firstName;
 
   @NotBlank(message = "Middle name is required")
   @Size(
-          max = 25,
-          min = 1,
-          message = "Provide a middle name with more than 1 character and less than 25"
-  )
+      max = 25,
+      min = 1,
+      message = "Provide a middle name with more than 1 character and less than 25")
   @Column(name = "middle_name")
   private String middleName;
 
   @NotBlank(message = "Surname is required")
   @Size(
-          max = 25,
-          min = 1,
-          message = "Provide a surname with more than 1 character and less than 25"
-  )
+      max = 25,
+      min = 1,
+      message = "Provide a surname with more than 1 character and less than 25")
   @Column(name = "surname")
   private String surname;
 
@@ -45,10 +42,9 @@ public class Users extends CreatedByAndUpdatedBy {
 
   @NotBlank(message = "Email address is required")
   @Size(
-          max = 100,
-          min = 1,
-          message = "Provide a email with more than 1 character and less than 100"
-  )
+      max = 100,
+      min = 1,
+      message = "Provide a email with more than 1 character and less than 100")
   @Column(name = "email")
   private String email;
 
@@ -56,28 +52,24 @@ public class Users extends CreatedByAndUpdatedBy {
   @Column(name = "password")
   private String password;
 
-  @Transient
-  private List<String> permissions;
+  @Transient private List<String> permissions;
 
   @Column(name = "grade_Id")
   private Long gradeId;
 
-  @Transient
-  private String userType;
+  @Transient private String userType;
 
-  @Transient
-  private String fullName;
+  @Transient private String fullName;
+
+  @Transient private String gradeName;
 
   @NotBlank(message = "Phone number is required")
   @Size(
-          max = 25,
-          min = 10,
-          message = "Provide a phone number with more than 10 character and less than 13"
-  )
+      max = 25,
+      min = 10,
+      message = "Provide a phone number with more than 10 character and less than 13")
   @Column(name = "phone")
   private String phone;
-
-
 
   @Column(name = "user_type_id")
   private Long userTypeId;
@@ -92,6 +84,10 @@ public class Users extends CreatedByAndUpdatedBy {
   @JoinColumn(name = "user_group_id", insertable = false, updatable = false)
   @ManyToOne(fetch = FetchType.LAZY)
   private UserGroups userGroupsLink;
+
+  @JoinColumn(name = "grade_Id", insertable = false, updatable = false)
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Grade gradeLink;
 
   public String getFirstName() {
     return firstName;
@@ -134,7 +130,7 @@ public class Users extends CreatedByAndUpdatedBy {
   }
 
   public String getFullName() {
-    return this.firstName +" "+ this.surname;
+    return this.firstName + " " + this.surname;
   }
 
   public Long getGradeId() {
@@ -173,7 +169,6 @@ public class Users extends CreatedByAndUpdatedBy {
     return enabled;
   }
 
-
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
@@ -194,7 +189,18 @@ public class Users extends CreatedByAndUpdatedBy {
     this.userType = userType;
   }
 
-  @JsonIgnore
+  public String getGradeName() {
+    return gradeName;
+  }
+
+  public void setGradeName(String gradeName) {
+    this.gradeName = gradeName;
+  }
+
+  public Grade getGradeLink() {
+    return gradeLink;
+  }
+
   public UserTypes getUserTypesLink() {
     return userTypesLink;
   }
@@ -202,5 +208,21 @@ public class Users extends CreatedByAndUpdatedBy {
   @JsonIgnore
   public UserGroups getUserGroupsLink() {
     return userGroupsLink;
+  }
+
+  public void setFullName(String fullName) {
+    this.fullName = fullName;
+  }
+
+  public void setUserTypesLink(UserTypes userTypesLink) {
+    this.userTypesLink = userTypesLink;
+  }
+
+  public void setUserGroupsLink(UserGroups userGroupsLink) {
+    this.userGroupsLink = userGroupsLink;
+  }
+
+  public void setGradeLink(Grade gradeLink) {
+    this.gradeLink = gradeLink;
   }
 }

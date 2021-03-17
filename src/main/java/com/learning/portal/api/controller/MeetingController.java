@@ -18,10 +18,10 @@ public class MeetingController extends ControllerGenerator<Meetings, MeetingFaca
         this.meetingFacade = meetingFacade;
     }
 
-    @CrossOrigin(origins ={ "http://localhost:3000"})
+    @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
     @GetMapping("/fetch-per-grade/{id}")
     public ResponseEntity<ResponseModel> fetchPerGrade(@PathVariable("id") Long id){
-        var response = meetingFacade.fetchPerGrade(id);
+        ResponseModel<Meetings> response = meetingFacade.fetchPerGrade(id);
         boolean isSuccess = response.getStatus().equals("00");
 
         return ResponseEntity.status(
@@ -29,10 +29,10 @@ public class MeetingController extends ControllerGenerator<Meetings, MeetingFaca
                 .body(response);
     }
 
-    @CrossOrigin(origins ={ "http://localhost:3000"})
+    @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
     @GetMapping("/fetch-per-creator/{id}")
     public ResponseEntity<ResponseModel> fetchPerCreator(@PathVariable("id") Long id){
-        var response = meetingFacade.fetchPerCreator(id);
+        ResponseModel<Meetings> response = meetingFacade.fetchPerCreator(id);
         boolean isSuccess = response.getStatus().equals("00");
 
         return ResponseEntity.status(

@@ -4,10 +4,13 @@ import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.UserTypeService;
 import com.learning.portal.core.template.AppConstants;
+import com.learning.portal.web.usermanager.entity.UserTypes;
 import com.learning.portal.web.usermanager.repository.UsertypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.usertype.UserType;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +34,8 @@ public class UserTypeFacade implements FacadeInterface<UserType> {
     }
 
     @Override
-    public ResponseModel<UserType> readAll() {
-      var usertype =  userTypeService.fetchAll();
+    public ResponseModel readAll() {
+      List<UserTypes> usertype =  userTypeService.fetchAll();
 
       String message = (usertype == null) ?
               AppConstants.FAIL_FETCH_MESSAGE : AppConstants.SUCCESS_FETCH_MESSAGE;
@@ -47,7 +50,7 @@ public class UserTypeFacade implements FacadeInterface<UserType> {
 
     private ResponseModel responseModel(Object record, String message) {
         String status = (record == null) ? "01" : "00";
-        var data = (record == null) ? null : record;
+        Object data = (record == null) ? null : record;
 
         ResponseModel responseModel = new ResponseModel();
         responseModel.setStatus(status);

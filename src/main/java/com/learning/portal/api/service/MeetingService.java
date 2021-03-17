@@ -33,7 +33,7 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Override
   public Meetings create(Meetings meetings) {
-    var record = meetingRepository.save(meetings);
+    Meetings record = meetingRepository.save(meetings);
 
     if (record != null) {
       List<String> phoneNumber = new ArrayList<>();
@@ -53,7 +53,7 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Override
   public Object update(Meetings meetings) {
-    var oldRecord = meetingRepository.findById(meetings.getId());
+    Optional<Meetings> oldRecord = meetingRepository.findById(meetings.getId());
 
     if (oldRecord.isPresent()) {
       meetingRepository.save(meetings);
@@ -64,7 +64,7 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Override
   public Object delete(Long id) {
-    var record = meetingRepository.findById(id);
+    Optional<Meetings> record = meetingRepository.findById(id);
 
     if (record.isPresent()) {
       Meetings meetings = record.get();
@@ -77,7 +77,7 @@ public class MeetingService implements BaseServiceInterface<Meetings> {
 
   @Override
   public Optional<Meetings> fetchOne(Long id) {
-    var record = meetingRepository.findById(id);
+    Optional<Meetings> record = meetingRepository.findById(id);
     if (record.isPresent()) {
       return record;
     }

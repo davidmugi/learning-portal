@@ -70,7 +70,6 @@ public class Content extends CreatedByAndUpdatedBy {
     this.contentLink = contentLink;
   }
 
-  @JsonIgnore
   public Grade getGradeLink() {
     return gradeLink;
   }

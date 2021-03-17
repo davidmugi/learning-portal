@@ -107,12 +107,9 @@ public class Meetings extends CreatedByAndUpdatedBy {
         this.password = password;
     }
 
-    @JsonIgnore
+
     public Grade getGradeLink() {
         return gradeLink;
     }
-
-
-
 
 }

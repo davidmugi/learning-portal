@@ -3,9 +3,11 @@ package com.learning.portal.api.facade;
 import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
 import com.learning.portal.api.service.ContentService;
+import com.learning.portal.api.service.GradeService;
 import com.learning.portal.api.service.UserService;
 import com.learning.portal.core.aws.AmazonServiceInterface;
 import com.learning.portal.core.template.AppConstants;
+import com.learning.portal.web.classes.entity.Grade;
 import com.learning.portal.web.usermanager.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -28,6 +30,8 @@ public class ContentFacade implements FacadeInterface<Content> {
 
   private final UserService userService;
 
+  private final GradeService gradeService;
+
   private final AmazonServiceInterface amazonServiceInterface;
 
   @Override
@@ -41,6 +45,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
     String url = amazonServiceInterface.uploadMultipartFile(file, filename);
 
+    Grade grade = gradeService.fetchOne(content.getGradeId()).get();
     Users users = userService.getLoginUSer().get();
 
     content.setCreatedDate(new Date());
@@ -50,7 +55,10 @@ public class ContentFacade implements FacadeInterface<Content> {
     content.setFlag(AppConstants.ACTIVE_RECORD);
     content.setFileServeName(filename);
 
+
     var record = contentService.create(content);
+
+    content.setGradeName(grade.getName());
 
     String message =
         (record == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;

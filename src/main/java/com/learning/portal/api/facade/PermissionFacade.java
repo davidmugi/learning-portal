@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -34,7 +35,7 @@ public class PermissionFacade implements FacadeInterface<Permissions> {
 
     @Override
     public ResponseModel<Permissions> readAll() {
-        var record = permissionsService.fetchAll();
+        List<Permissions> record = permissionsService.fetchAll();
         String message = (record == null) ?
                 AppConstants.SUCCESS_FETCH_MESSAGE : AppConstants.FAIL_FETCH_MESSAGE;
 
@@ -48,7 +49,7 @@ public class PermissionFacade implements FacadeInterface<Permissions> {
 
     private ResponseModel responseModel(Object record, String message) {
         String status = (record == null) ? "01" : "00";
-        var data = (record == null) ? null : record;
+        Object data = (record == null) ? null : record;
 
         ResponseModel responseModel = new ResponseModel();
         responseModel.setStatus(status);
