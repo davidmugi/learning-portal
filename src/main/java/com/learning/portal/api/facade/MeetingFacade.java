@@ -2,9 +2,11 @@ package com.learning.portal.api.facade;
 
 import com.learning.portal.api.FacadeInterface;
 import com.learning.portal.api.data.ResponseModel;
+import com.learning.portal.api.service.GradeService;
 import com.learning.portal.api.service.MeetingService;
 import com.learning.portal.api.service.UserService;
 import com.learning.portal.core.template.AppConstants;
+import com.learning.portal.web.classes.entity.Grade;
 import com.learning.portal.web.meetings.entity.Meetings;
 import com.learning.portal.web.usermanager.entity.Users;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +25,12 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
 
   private final MeetingService meetingService;
 
+  private final GradeService gradeService;
+
   @Override
   public ResponseModel<Meetings> create(Meetings meetings) {
+
+    Grade grade = gradeService.fetchOne(meetings.getGradeId()).get();
 
     if (meetingService.validationCheck(meetings) != null) {
       return responseModel(null, meetingService.validationCheck(meetings));
@@ -35,7 +41,7 @@ public class MeetingFacade implements FacadeInterface<Meetings> {
     meetings.setFlag(AppConstants.ACTIVE_RECORD);
     Meetings meeting = meetingService.create(meetings);
 
-    meeting.setGradeName(meeting.getGradeLink().getName());
+    meeting.setGradeName(grade.getName());
 
     String message =
         (meeting == null) ? AppConstants.FAIL_CREATE_MESSAGE : AppConstants.SUCCESS_CREATE_MESSAGE;

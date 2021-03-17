@@ -7,10 +7,7 @@ import com.learning.portal.web.usermanager.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,6 +22,7 @@ public class UsersApiController extends ControllerGenerator<Users, UserFacade> {
     super(userFacade);
   }
 
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @PostMapping("/sign-up")
   public ResponseEntity<ResponseModel> signUp(@RequestBody @Valid Users users){
     ResponseModel<Users> response = userFacade.signUp(users);

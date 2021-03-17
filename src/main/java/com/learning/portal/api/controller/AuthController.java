@@ -38,7 +38,7 @@ public class AuthController {
 
   @Autowired private JwtConfig jwtConfig;
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @PostMapping("auth")
   public ResponseEntity auth(@RequestBody AuthenticationRequest request) throws BadCredentialsException{
 
@@ -49,13 +49,13 @@ public class AuthController {
     return ResponseEntity.ok(new AuthenticationResponse(token));
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @GetMapping("profile")
   public ResponseEntity<ResponseModel> auth(){
     return ResponseEntity.ok(userFacade.getProfile());
   }
 
-  @CrossOrigin(origins ={ "http://localhost:3000"})
+  @CrossOrigin(origins ={ "http://localhost:3000","https://eimishajamii.herokuapp.com"})
   @GetMapping("let")
   public ResponseEntity let(){
     return ResponseEntity.ok("okay");
