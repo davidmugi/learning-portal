@@ -47,7 +47,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
     String url = amazonServiceInterface.uploadMultipartFile(file, filename);
 
-    Grade grade = gradeService.fetchOne(content.getId()).get();
+    Grade grade = gradeService.fetchOne(content.getGradeId()).get();
     Users users = userService.getLoginUSer().get();
 
     content.setCreatedDate(new Date());
