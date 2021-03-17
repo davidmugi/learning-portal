@@ -101,7 +101,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
 
   private ResponseModel responseModel(Object record, String message) {
     String status = (record == null) ? "01" : "00";
-    var data = (record == null) ? null : record;
+    Object data = (record == null) ? null : record;
 
     ResponseModel responseModel = new ResponseModel();
     responseModel.setStatus(status);
@@ -112,7 +112,7 @@ public class UserGroupFacade implements FacadeInterface<UserGroups> {
   }
 
   private void updatePermissions(UserGroups userGroups) {
-    var permissionList = permissionRepository.findAllById(userGroups.getPermissionIds());
+    Iterable<Permissions> permissionList = permissionRepository.findAllById(userGroups.getPermissionIds());
     List<Permissions> permissions = new ArrayList<>();
 
     if (permissionList.iterator().hasNext()) {

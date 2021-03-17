@@ -34,7 +34,7 @@ public class UserService implements BaseServiceInterface<Users> {
   public Users create(Users users) {
     users.setCreatedDate(new Date());
     users.setLastModifiedDate(new Date());
-    var record = userRepository.save(users);
+    Users record = userRepository.save(users);
 
     if (record == null) {
       return null;

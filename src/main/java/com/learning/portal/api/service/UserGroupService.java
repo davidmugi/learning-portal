@@ -29,7 +29,7 @@ public class UserGroupService implements BaseServiceInterface<UserGroups> {
 
   @Override
   public Object update(UserGroups userGroups) {
-    var record = userGroupRepository.findById(userGroups.getId());
+    Optional<UserGroups> record = userGroupRepository.findById(userGroups.getId());
 
     if (record.isPresent()) {
       userGroupRepository.save(userGroups);

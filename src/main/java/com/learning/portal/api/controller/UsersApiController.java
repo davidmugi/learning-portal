@@ -27,7 +27,7 @@ public class UsersApiController extends ControllerGenerator<Users, UserFacade> {
 
   @PostMapping("/sign-up")
   public ResponseEntity<ResponseModel> signUp(@RequestBody @Valid Users users){
-    var response = userFacade.signUp(users);
+    ResponseModel<Users> response = userFacade.signUp(users);
     boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(

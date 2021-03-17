@@ -25,7 +25,7 @@ public class ContentController {
   @CrossOrigin(origins = {"http://localhost:3000"})
   @GetMapping("/fetch-per-grade/{id}")
   public ResponseEntity<ResponseModel> fetchPerGrade(@PathVariable("id") Long id) {
-    var response = contentFacade.fetchContentPerGrade(id);
+    ResponseModel response = contentFacade.fetchContentPerGrade(id);
     Boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(
@@ -36,7 +36,7 @@ public class ContentController {
   @CrossOrigin(origins = {"http://localhost:3000"})
   @GetMapping("fetch-per-creator/{id}")
   public ResponseEntity<ResponseModel> fetchPerCreator(@PathVariable("id") Long id) {
-    var record = contentFacade.fetchContentPerCreator(id);
+    ResponseModel record = contentFacade.fetchContentPerCreator(id);
     boolean isSuccess = record.getStatus().equals("00");
 
     return ResponseEntity.status(
@@ -59,7 +59,7 @@ public class ContentController {
   @CrossOrigin(origins = {"http://localhost:3000"})
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<ResponseModel> delete(@PathVariable("id") Long id) {
-    var response = contentFacade.delete(id);
+    ResponseModel response = contentFacade.delete(id);
     Boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(
@@ -70,7 +70,7 @@ public class ContentController {
   @CrossOrigin(origins = {"http://localhost:3000"})
   @GetMapping("/fetch-one/{id}")
   public ResponseEntity<ResponseModel> fetchOne(@PathVariable("id") Long id) {
-    var response = contentFacade.readId(id);
+    ResponseModel response = contentFacade.readId(id);
     Boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(
@@ -81,7 +81,7 @@ public class ContentController {
   @CrossOrigin(origins = {"http://localhost:3000"})
   @GetMapping("/fetch-all")
   public ResponseEntity<ResponseModel> fetchAll() {
-    var response = contentFacade.readAll();
+    ResponseModel response = contentFacade.readAll();
     Boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(
@@ -94,7 +94,7 @@ public class ContentController {
   public ResponseEntity<ResponseModel> update(
       @PathVariable("id") Long id, @RequestParam("file") MultipartFile file, Content content)
       throws IOException {
-    var response = contentFacade.update(content, file, id);
+    ResponseModel response = contentFacade.update(content, file, id);
     Boolean isSuccess = response.getStatus().equals("00");
 
     return ResponseEntity.status(
