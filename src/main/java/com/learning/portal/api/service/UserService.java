@@ -40,9 +40,9 @@ public class UserService implements BaseServiceInterface<Users> {
       return null;
     }
 
-//    Object[] object = new Object[]{record.getFullName()};
-//    String message = smsMessageSource.getMessage("welcome.message",object, Locale.ENGLISH);
-//    smsServiceInterface.sendSMS(message,record.getPhone());
+    Object[] object = new Object[]{record.getFullName()};
+    String message = smsMessageSource.getMessage("welcome.message",object, Locale.ENGLISH);
+    smsServiceInterface.sendSMS(message,record.getPhone());
     return record;
   }
 
