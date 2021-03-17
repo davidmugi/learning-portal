@@ -73,7 +73,7 @@ public class ContentFacade implements FacadeInterface<Content> {
     String ext = FilenameUtils.getExtension(originalFileName);
     String filename = String.format("file-%s.%s", UUID.randomUUID().toString(), ext);
 
-    if (oOldContent.isEmpty()){
+    if (!oOldContent.isPresent()){
       return responseModel(null,AppConstants.FAIL_UPDATE_MESSAGE);
     }
     Content oldContent = oOldContent.get();
